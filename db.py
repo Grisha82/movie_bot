@@ -1,10 +1,8 @@
+import os
 import sqlite3
-
-from constants import GENRES
-
 from random import sample
 
-import os
+from constants import GENRES
 
 
 def get_db_connection():
@@ -17,7 +15,7 @@ def create_db():
     for genre in GENRES:
         _genre = GENRES[genre][:-4]
         conn.execute(
-        f'''CREATE TABLE IF NOT EXISTS {_genre}(
+            f'''CREATE TABLE IF NOT EXISTS {_genre}(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT,
                 link TEXT
@@ -55,4 +53,3 @@ def get_movies_list(tablename_of_selected_genre, counts_movies):
 if __name__ == '__main__':
     create_db()
     add_movies_in_db()
-

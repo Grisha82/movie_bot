@@ -1,18 +1,19 @@
 import os
 
 from dotenv import load_dotenv
-from telegram.ext import CommandHandler, Filters, MessageHandler, Updater,CallbackQueryHandler
-from telegram import ReplyKeyboardMarkup, ParseMode
+from telegram import ParseMode, ReplyKeyboardMarkup
+from telegram.ext import (CallbackQueryHandler, CommandHandler, Filters,
+                          MessageHandler, Updater)
 
-from utils import inline_keyboard, set_genre, generate_message_with_list_of_movies
-from constants import GENRES, COUNTS_MOVIES
-
+from constants import COUNTS_MOVIES, GENRES
 from db import get_movies_list
-
+from utils import (generate_message_with_list_of_movies, inline_keyboard,
+                   set_genre)
 
 load_dotenv()
 
 updater = Updater(token=os.getenv('TOKEN'))
+
 
 def hello(update, context):
     chat = update.effective_chat
@@ -44,9 +45,11 @@ def send_list_of_movies(update, context):
         parse_mode=ParseMode.HTML
     )
 
+
 updater.dispatcher.add_handler(CommandHandler('start', hello))
-updater.dispatcher.add_handler(MessageHandler(Filters.regex('^выбрать фильм$'), find_out_genre_of_film ))
+updater.dispatcher.add_handler(
+    MessageHandler(Filters.regex('^выбрать фильм$'), find_out_genre_of_film)
+)
 updater.dispatcher.add_handler(CallbackQueryHandler(send_list_of_movies))
 updater.start_polling()
 updater.idle()
-
